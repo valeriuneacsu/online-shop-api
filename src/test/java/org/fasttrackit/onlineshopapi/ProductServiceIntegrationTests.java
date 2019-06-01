@@ -4,6 +4,7 @@ import org.fasttrackit.onlineshopapi.domain.Product;
 import org.fasttrackit.onlineshopapi.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.service.ProductService;
 import org.fasttrackit.onlineshopapi.transfer.CreateProductRequest;
+import org.fasttrackit.onlineshopapi.transfer.UpdateProductRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.transaction.TransactionSystemException;
 
 import javax.validation.ConstraintViolationException;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.core.IsNull.notNullValue;
@@ -69,5 +70,33 @@ public class ProductServiceIntegrationTests {
     public void testGetProduct_whenNonExistingId_thenThrowResourceNotFoundException() throws ResourceNotFoundException {
 	   productService.getProduct(9999L);
     }
+
+    @Test
+    public void testUpdateProduct_whenValidRequest_thenReturnUpdatedProduct() throws ResourceNotFoundException {
+	    Product createdProduct = createProduct();
+
+	    UpdateProductRequest request = new UpdateProductRequest();
+	    request.setName(createdProduct.getName() + "Updated");
+	    request.setPrice(createdProduct.getPrice() + 10);
+	    request.setQuantity(createdProduct.getQuantity() + 10);
+
+        Product updatedproduct = productService.updateproduct(createdProduct.getId(), request);
+
+        assertThat(updatedproduct, notNullValue());
+        assertThat(updatedproduct.getId(), is(createdProduct.getId()));
+
+        assertThat(updatedproduct.getQuantity(), not(is(createdProduct.getQuantity())));
+        assertThat(updatedproduct.getQuantity(), is(request.getQuantity()));
+
+        assertThat(updatedproduct.getPrice(), not(is(createdProduct.getPrice())));
+        assertThat(updatedproduct.getPrice(), is(request.getPrice()));
+
+        assertThat(updatedproduct.getName(), not(is(createdProduct.getName())));
+        assertThat(updatedproduct.getName(), is(request.getName()));
+
+
+    }
+
+
 
 }

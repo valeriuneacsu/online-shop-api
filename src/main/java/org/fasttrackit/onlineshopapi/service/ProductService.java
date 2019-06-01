@@ -5,11 +5,14 @@ import org.fasttrackit.onlineshopapi.domain.Product;
 import org.fasttrackit.onlineshopapi.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.repository.ProductRepository;
 import org.fasttrackit.onlineshopapi.transfer.CreateProductRequest;
+import org.fasttrackit.onlineshopapi.transfer.GetProductsRequest;
 import org.fasttrackit.onlineshopapi.transfer.UpdateProductRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
@@ -56,7 +59,7 @@ public class ProductService {
 
 
     public Product updateproduct(long id, UpdateProductRequest request) throws ResourceNotFoundException {
-        LOGGER.info("Updating product{} with {]", id, request);
+        LOGGER.info("Updating product{} with {}", id, request);
 
         Product product = getProduct(id);
 
@@ -67,10 +70,23 @@ public class ProductService {
 
 
     public void deleteProduct(long id) {
-        LOGGER.info("Deleting product {]", id);
+        LOGGER.info("Deleting product {}", id);
         productRepository.deleteById(id);
-        LOGGER.info("Deleted product {]", id);
+        LOGGER.info("Deleted product {}", id);
     }
 
+    public Page<Product> getProducts(GetProductsRequest request, Pageable pageable){
+        LOGGER.info("Retrieving products{}", request);
+
+        if (request.getPartialName() != null && request.getMinimumQuantity() != null) {
+            return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(), request.getMinimumQuantity(), pageable);
+        } else if(request.getPartialName() != null) {
+            return productRepository.findByNameContaining(request.getPartialName(), pageable);
+        }
+
+        return productRepository.findAll(pageable);
+
+
+    }
 
 }
