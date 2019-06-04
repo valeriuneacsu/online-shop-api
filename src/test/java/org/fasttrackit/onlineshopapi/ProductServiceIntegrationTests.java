@@ -35,9 +35,9 @@ public class ProductServiceIntegrationTests {
 
     private Product createProduct() {
         CreateProductRequest request = new CreateProductRequest();
-        request.setName("Mazare");
-        request.setPrice(99.99);
-        request.setQuantity(10);
+        request.setName("Nivea");
+        request.setPrice(9.99);
+        request.setQuantity(20);
 
         Product createdProduct = productService.createProduct(request);
 
@@ -80,19 +80,19 @@ public class ProductServiceIntegrationTests {
 	    request.setPrice(createdProduct.getPrice() + 10);
 	    request.setQuantity(createdProduct.getQuantity() + 10);
 
-        Product updatedproduct = productService.updateproduct(createdProduct.getId(), request);
+        Product updatedProduct = productService.updateProduct(createdProduct.getId(), request);
 
-        assertThat(updatedproduct, notNullValue());
-        assertThat(updatedproduct.getId(), is(createdProduct.getId()));
+        assertThat(updatedProduct, notNullValue());
+        assertThat(updatedProduct.getId(), is(createdProduct.getId()));
 
-        assertThat(updatedproduct.getQuantity(), not(is(createdProduct.getQuantity())));
-        assertThat(updatedproduct.getQuantity(), is(request.getQuantity()));
+        assertThat(updatedProduct.getQuantity(), not(is(createdProduct.getQuantity())));
+        assertThat(updatedProduct.getQuantity(), is(request.getQuantity()));
 
-        assertThat(updatedproduct.getPrice(), not(is(createdProduct.getPrice())));
-        assertThat(updatedproduct.getPrice(), is(request.getPrice()));
+        assertThat(updatedProduct.getPrice(), not(is(createdProduct.getPrice())));
+        assertThat(updatedProduct.getPrice(), is(request.getPrice()));
 
-        assertThat(updatedproduct.getName(), not(is(createdProduct.getName())));
-        assertThat(updatedproduct.getName(), is(request.getName()));
+        assertThat(updatedProduct.getName(), not(is(createdProduct.getName())));
+        assertThat(updatedProduct.getName(), is(request.getName()));
 
 
     }

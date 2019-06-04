@@ -6,5 +6,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/online-shop
     username: postgres
     password: Flamingo00
-    jpa.hibernate.ddl-auto: update   #create sterge din baza de date la fiecare rulare
+  jpa:
+    hibernate.ddl-auto: update   #create sterge din baza de date la fiecare rulare
     database-platform: org.hibernate.dialect.PostgreSQLDialect

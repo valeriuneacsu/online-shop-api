@@ -58,7 +58,7 @@ public class ProductService {
     }
 
 
-    public Product updateproduct(long id, UpdateProductRequest request) throws ResourceNotFoundException {
+    public Product updateProduct(long id, UpdateProductRequest request) throws ResourceNotFoundException {
         LOGGER.info("Updating product{} with {}", id, request);
 
         Product product = getProduct(id);
