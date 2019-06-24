@@ -36,7 +36,7 @@ public class ProductServiceIntegrationTests {
     private Product createProduct() {
         CreateProductRequest request = new CreateProductRequest();
         request.setName("Nivea");
-        request.setPrice(9.99);
+        request.setPrice(9.95);
         request.setQuantity(20);
 
         Product createdProduct = productService.createProduct(request);
