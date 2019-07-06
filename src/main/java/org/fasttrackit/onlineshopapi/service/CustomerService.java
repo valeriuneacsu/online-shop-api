@@ -3,6 +3,7 @@ package org.fasttrackit.onlineshopapi.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.fasttrackit.onlineshopapi.domain.Customer;
+import org.fasttrackit.onlineshopapi.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.repository.CustomerRepository;
 import org.fasttrackit.onlineshopapi.transfer.customer.CreateCustomerRequest;
 import org.slf4j.Logger;
@@ -32,13 +33,23 @@ public class CustomerService {
 
         LOGGER.info("Creating customer {}",request );  // in loc de .info se poate pune .debug, .error
 
-
         Customer customer = objectMapper.convertValue(request, Customer.class);
-
 
         return customerRepository.save(customer);
 
     }
+
+
+    public Customer getCustomer(long id) throws ResourceNotFoundException {
+        LOGGER.info("Retreiving customer {}", id);
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Customer " + id + " does not exist."));
+
+    }
+
+
+
 
 
 
