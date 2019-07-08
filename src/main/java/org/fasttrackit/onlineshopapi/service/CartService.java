@@ -8,6 +8,7 @@ import org.fasttrackit.onlineshopapi.repository.CartRepository;
 import org.fasttrackit.onlineshopapi.transfer.cart.AddProductToCartRequest;
 import org.fasttrackit.onlineshopapi.transfer.cart.CartResponse;
 import org.fasttrackit.onlineshopapi.transfer.customer.CustomerResponse;
+import org.fasttrackit.onlineshopapi.transfer.product.ProductResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +67,17 @@ public class CartService {
 
 
         CartResponse cartResponse = new CartResponse();
+        cartResponse.setId(cart.getId());
         cartResponse.setCustomer(customerResponse);
+
+        cart.getProducts().forEach(product -> {
+            ProductResponse productResponse = new ProductResponse();
+            productResponse.setId(product.getId());
+            productResponse.setName(product.getName());
+
+            cartResponse.getProducts().add(productResponse);
+
+        });
 
         return cartResponse;
 
