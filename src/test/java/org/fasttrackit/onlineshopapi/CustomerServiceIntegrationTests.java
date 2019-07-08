@@ -2,6 +2,7 @@ package org.fasttrackit.onlineshopapi;
 
 import org.fasttrackit.onlineshopapi.domain.Customer;
 import org.fasttrackit.onlineshopapi.service.CustomerService;
+import org.fasttrackit.onlineshopapi.steps.CustomerSteps;
 import org.fasttrackit.onlineshopapi.transfer.customer.CreateCustomerRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,29 +20,15 @@ public class CustomerServiceIntegrationTests {
     @Autowired
     private CustomerService customerService;
 
+    @Autowired
+    private CustomerSteps customerSteps;
+
     @Test
     public void testCreateCustomer_whenValidRequest_thenReturnCreatedCustomer() {
 
-        createCustomer();
-
+        customerSteps.createCustomer();
     }
 
-    private Customer createCustomer() {
-        CreateCustomerRequest request = new CreateCustomerRequest();
-        request.setFirstName("Dorel");
-        request.setLastName("Tarnacop");
-        request.setAge(100);
-
-        Customer createdCustomer = customerService.createCustomer(request);
-
-        assertThat (createdCustomer, notNullValue());
-        assertThat (createdCustomer.getId(), greaterThan(0L));
-        assertThat (createdCustomer.getFirstName(), is(request.getFirstName()));
-        assertThat (createdCustomer.getLastName(),is(request.getLastName()));
-        assertThat (createdCustomer.getAge(), is(request.getAge()));
-
-        return createdCustomer;
-    }
 
 
 

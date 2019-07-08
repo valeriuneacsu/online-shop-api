@@ -3,6 +3,7 @@ package org.fasttrackit.onlineshopapi;
 import org.fasttrackit.onlineshopapi.domain.Product;
 import org.fasttrackit.onlineshopapi.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshopapi.service.ProductService;
+import org.fasttrackit.onlineshopapi.steps.ProductSteps;
 import org.fasttrackit.onlineshopapi.transfer.CreateProductRequest;
 import org.fasttrackit.onlineshopapi.transfer.UpdateProductRequest;
 import org.junit.Test;
@@ -26,29 +27,17 @@ public class ProductServiceIntegrationTests {
     @Autowired
     private ProductService productService;
 
+    @Autowired
+    private ProductSteps productSteps;
+
 	@Test
 	public void testCreateProduct_whenValidRequest_thenReturnCreatedProduct() {
 
-        createProduct();
+        productSteps.createProduct();
 
     }
 
-    private Product createProduct() {
-        CreateProductRequest request = new CreateProductRequest();
-        request.setName("Nivea");
-        request.setPrice(9.95);
-        request.setQuantity(20);
 
-        Product createdProduct = productService.createProduct(request);
-
-        assertThat (createdProduct, notNullValue());
-        assertThat (createdProduct.getId(), greaterThan(0L));
-        assertThat (createdProduct.getName(), is(request.getName()));
-        assertThat (createdProduct.getPrice(), is(request.getPrice()));
-        assertThat (createdProduct.getQuantity(), is(request.getQuantity()));
-
-        return createdProduct;
-    }
 
     @Test (expected = TransactionSystemException.class)
 	public void testCreateProduct_whenMissingMandatoryProperties_thenThrowException(){
@@ -58,7 +47,7 @@ public class ProductServiceIntegrationTests {
 
     @Test
     public void testGetProduct_whenExistingId_thenReturnProduct() throws ResourceNotFoundException {
-	    Product createdProduct = createProduct();
+	    Product createdProduct = productSteps.createProduct();
 
 	    Product product = productService.getProduct(createdProduct.getId());
 
@@ -73,7 +62,7 @@ public class ProductServiceIntegrationTests {
 
     @Test
     public void testUpdateProduct_whenValidRequest_thenReturnUpdatedProduct() throws ResourceNotFoundException {
-	    Product createdProduct = createProduct();
+	    Product createdProduct = productSteps.createProduct();
 
 	    UpdateProductRequest request = new UpdateProductRequest();
 	    request.setName(createdProduct.getName() + "Updated");
